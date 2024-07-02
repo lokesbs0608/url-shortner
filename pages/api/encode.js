@@ -1,31 +1,27 @@
+// pages/api/encode.js
+
 import connectToDatabase from "../../lib/mongodb";
 import Url from "../../models/urls";
-import { nanoid } from "nanoid";
-
-const baseURL = process.env.BASE_URL;
 
 export default async function handler(req, res) {
-  await connectToDatabase();
-
   if (req.method === "POST") {
     const { longUrl } = req.body;
+    const shortCode = Math.random().toString(36).substr(2, 8); // Example: This should be unique in practice
 
-    if (!longUrl) {
-      return res.status(400).json({ error: "Invalid URL" });
-    }
+    // Generate a unique short code
+    const shortUrl = `${process.env.BASE_URL}/${shortCode}`;
 
-    // Function to generate a short code from a long URL
-    const shortCode = nanoid(12);
+    // Connect to the database
+    await connectToDatabase();
 
-    const newUrl = new Url({
-      longUrl,
-      shortCode,
-    });
-
+    // Save to the database (example, you should handle uniqueness)
+    const newUrl = new Url({ longUrl, shortUrl, shortCode });
     await newUrl.save();
 
-    res.status(200).json({ shortUrl: `${baseURL}${shortCode}` });
+    // Respond with the short URL
+    res.status(200).json({ shortUrl });
   } else {
-    res.status(405).json({ error: "Method not allowed" });
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

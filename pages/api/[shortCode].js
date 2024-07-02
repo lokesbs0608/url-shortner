@@ -6,18 +6,16 @@ import Url from "../../models/urls";
 export default async function handler(req, res) {
   const { shortCode } = req.query;
 
+  // Connect to the database
   await connectToDatabase();
 
-  try {
-    const urlDoc = await Url.findOne({ shortCode });
+  // Find the URL by shortCode
+  const urlDoc = await Url.findOne({ shortCode });
 
-    if (urlDoc) {
-      res.redirect(urlDoc.longUrl);
-    } else {
-      res.status(404).json({ error: "URL not found" });
-    }
-  } catch (error) {
-    console.error("Error redirecting:", error);
-    res.status(500).json({ error: "Server error" });
+  if (urlDoc) {
+    // Redirect to the long URL
+    res.redirect(urlDoc.longUrl);
+  } else {
+    res.status(404).json({ error: "URL not found" });
   }
 }
