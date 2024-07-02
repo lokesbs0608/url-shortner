@@ -1,7 +1,13 @@
-import mongoose from "mongoose";
+// models/urls.js
+
+import mongoose from 'mongoose';
 
 const UrlSchema = new mongoose.Schema({
   longUrl: {
+    type: String,
+    required: true,
+  },
+  shortUrl: {
     type: String,
     required: true,
   },
@@ -12,4 +18,4 @@ const UrlSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.Url || mongoose.model("Url", UrlSchema);
+export default mongoose.models.Url || mongoose.model('Url', UrlSchema);
