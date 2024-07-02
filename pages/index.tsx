@@ -5,10 +5,11 @@ import "./globals.css";
 export default function Home() {
   const [longUrl, setLongUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
+    setLoading(true)
     const res = await fetch('/api/encode', {
       method: 'POST',
       headers: {
@@ -19,6 +20,7 @@ export default function Home() {
 
     const data = await res.json();
     if (res.ok) {
+      setLoading(false)
       setShortUrl(data.shortUrl);
     } else {
       alert(data.error);
@@ -61,9 +63,12 @@ export default function Home() {
       </form>
       {shortUrl && (
         <div className="mt-4">
-          <p>Short URL: <a href={shortUrl} target="_blank" rel="noopener noreferrer">{shortUrl}</a></p>
+          <p><a href={shortUrl} className='text-green-700' target="_blank" rel="noopener noreferrer">{shortUrl}</a></p>
           <button className="button text-center bg-gray-300 text-gray-800 px-4 py-2 mt-2" onClick={handleCopy}>Copy</button>
         </div>
+      )}
+      {loading && (
+        <p>Loading... Please wait</p>
       )}
     </div>
   );
