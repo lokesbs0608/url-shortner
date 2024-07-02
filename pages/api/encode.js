@@ -2,7 +2,7 @@ import connectToDatabase from "../../lib/mongodb";
 import Url from "../../models/urls";
 import { nanoid } from "nanoid";
 
-const baseURL = "https://lokesh-url-shortner.vercel.app/api/";
+const baseURL = process.env.BASE_URL;
 
 export default async function handler(req, res) {
   await connectToDatabase();
