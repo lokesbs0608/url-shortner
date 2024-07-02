@@ -46,7 +46,7 @@ export default function Home() {
   };
 
   return (
-    <div className='container mx-auto min-h-[90vh] flex items-center justify-center flex-col border border-blue-200 m-2'>
+    <div className='container mx-auto min-h-[90vh] flex items-center justify-center flex-col border border-blue-200 m-2 p-2 text-center'>
       <h1 className='h1 font-bold text-4xl break-keep text-blue-800'>Paste the URL to be shortened</h1>
       <form className='flex m-4' onSubmit={handleSubmit}>
         <input
